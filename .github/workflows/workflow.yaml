@@ -21,10 +21,10 @@ jobs:
 
       - name: 'Build production'
         run: |
-              docker build . --target production --tag ghcr.io/${{github.actor}}/nextjs-example:production
-              docker push ghcr.io/${{github.actor}}/nextjs-example:production
+              docker build . --target production --tag ghcr.io/kantheastronaut/nextjs-example:production
+              docker push ghcr.io/kantheastronaut/nextjs-example:production
 
       - name: 'Build development'
         run: |
-            docker build . --target development --tag ghcr.io/${{github.actor}}/nextjs-example:development
-            docker push ghcr.io/${{github.actor}}/nextjs-example:development
+            docker build . --target development --tag ghcr.io/kantheastronaut/nextjs-example:development
+            docker push ghcr.io/kantheastronaut/nextjs-example:development
