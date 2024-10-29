@@ -8,8 +8,6 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    permissions:
-      packages: write
     steps:
       - uses: actions/checkout@v4
 
