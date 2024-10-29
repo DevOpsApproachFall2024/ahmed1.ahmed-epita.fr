@@ -18,20 +18,21 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
 
-      - name: lowercase repository name
-        run: |
-          echo "GITHUB_REPO_LOWER=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
+      - id: lowercase_github_repository
+        uses: ASzc/change-string-case-action@v2
+        with:
+          string: ${{ github.repository }}
 
       - name: Build development
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: ghcr.io/${GITHUB_REPO_LOWER}:development
+          tags: ghcr.io/${{ steps.lowercase_github_repository.outputs.lowercase }}:development
 
       - name: Build production
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: ghcr.io/${GITHUB_REPO_LOWER}:production
+          tags: ghcr.io/${{ steps.lowercase_github_repository.outputs.lowercase }}:production
