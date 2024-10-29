@@ -20,12 +20,16 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
 
-      - name: 'Build production'
-        run: |
-              docker build . --target production --tag ghcr.io/kantheastronaut/nextjs-example:production
-              docker push ghcr.io/kantheastronaut/nextjs-example:production
+      - name: Build development
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:development
 
-      - name: 'Build development'
-        run: |
-            docker build . --target development --tag ghcr.io/kantheastronaut/nextjs-example:development
-            docker push ghcr.io/kantheastronaut/nextjs-example:development
+      - name: Build production
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:production
