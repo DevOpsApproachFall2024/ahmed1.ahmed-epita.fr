@@ -25,11 +25,6 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
 
-      - id: lowercase_github_repository
-        uses: ASzc/change-string-case-action@v2
-        with:
-          string: ${{ github.repository }}
-
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
