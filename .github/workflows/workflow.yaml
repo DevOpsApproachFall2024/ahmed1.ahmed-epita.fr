@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -28,16 +30,33 @@ jobs:
         with:
           string: ${{ github.repository }}
 
-      - name: Build development
-        uses: docker/build-push-action@v2
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
         with:
-          context: .
-          push: true
-          tags: ghcr.io/${{ steps.lowercase_github_repository.outputs.lowercase }}:development
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=match,pattern=v(.*)
+            # set latest tag for default branch
+            type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Build production
+      - name: Build
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ steps.lowercase_github_repository.outputs.lowercase }}:production
+          tags: ${{ steps.meta.outputs.tags }}
+
+      # - name: Build production
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: ghcr.io/${{ steps.lowercase_github_repository.outputs.lowercase }}:production
+
+      # - name: Build development
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: ghcr.io/${{ steps.lowercase_github_repository.outputs.lowercase }}:development
